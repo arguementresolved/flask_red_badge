@@ -9,7 +9,7 @@ from .views.user_view import user_api as user_blueprint
 from .views.blogpost_view import blogpost_api as blog_blueprint
 from .views.battle_view import battles_api as battles_blueprint
 
-def create_app(env_name):
+def create_app(env_name='development'):
     '''
     Create App
     '''
@@ -18,6 +18,7 @@ def create_app(env_name):
     app = Flask(__name__)
 
     app.config.from_object(app_config[env_name])
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     CORS(app)
 
