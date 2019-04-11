@@ -67,5 +67,3 @@ class UserSchema(Schema):
     username = fields.Str(required=True)
     email = fields.Email(required=True)
     password = fields.Str(required=True)
-    comments = fields.Int(dump_only=True)
-    recent_battles = fields.Int(dump_only=True)
