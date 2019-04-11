@@ -18,7 +18,7 @@ class BattlesModel(db.Model):
     Results = db.Column(db.String(128), unique=True, nullable=False)
     created_at = db.Column(db.DateTime)
     # navigational property
-    battles = db.relationship('BattlesModel', backref='users', lazy=True)
+    # battles = db.relationship('BattlesModel', backref='users', lazy=True)
 
     def __init__(self, data):
         self.Hero_names = data.get('Hero_names')
