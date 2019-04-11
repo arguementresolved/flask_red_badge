@@ -12,8 +12,8 @@ class UserModel(db.Model):
     email = db.Column(db.String(128), unique=True, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(128), nullable=False)
-    created_at = db.Column(db.DateTime)
-    modified_at = db.Column(db.DateTime)
+    comments = db.Column(db.Integer, foreign_key=True)
+    recent_battles = db.Column(db.Integer, foreign_key=True)
     # navigational property
 
     def __init__(self, data):
@@ -68,5 +68,5 @@ class UserSchema(Schema):
     username = fields.Str(required=True)
     email = fields.Email(required=True)
     password = fields.Str(required=True)
-    created_at = fields.DateTime(dump_only=True)
-    modified_at = fields.DateTime(dump_only=True)
+    comments = fields.Int(dump_only=True)
+    recent_battles = fields.Int(dump_only=True)
