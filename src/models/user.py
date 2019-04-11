@@ -46,6 +46,7 @@ class UserModel(db.Model):
         '''takes in data to modify model'''
         for key, item in data.items():
             if key == 'password':
+                value = 'password'
                 self.password = self._generate_hash(value)
             setattr(self, key, item)
         self.modified_at = datetime.datetime.utcnow()
