@@ -23,7 +23,7 @@ def get_fighter(fighter_id):
     return custom_response(ser_battles, 200)
 
 
-@battles_api.route('/', methods=['POST'])
+@battles_api.route('/new', methods=['POST'])
 @Auth.auth_required
 def create():
    
