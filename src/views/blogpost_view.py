@@ -29,7 +29,7 @@ def create():
     return custom_response(data, 201)
 
 
-@blogpost_api.route('/<int:id>')
+@blogpost_api.route('/<int:id>', methods=['DELETE'])
 @Auth.auth_required
 def delete(id):
     '''
@@ -64,7 +64,7 @@ def get_all():
     return custom_response(data, 200)
 
 
-@blogpost_api.route('/<int:blogpost_id>')
+@blogpost_api.route('/<int:blogpost_id>', methods=["GET"])
 @Auth.auth_required
 def get_one(blogpost_id):
 

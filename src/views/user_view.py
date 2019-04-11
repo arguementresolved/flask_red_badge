@@ -35,7 +35,7 @@ def create():
     return custom_response({'token': token}, 201)
 
 
-@user_api.route('/me', methods=['DELETE'])
+@user_api.route('/me', methods=["DELETE"])
 @Auth.auth_required
 def delete():
     '''
@@ -45,6 +45,35 @@ def delete():
     user = UserModel.get_one_user(g.user.get('id'))
     user.delete()
     return custom_response({'message': 'deleted'}, 204)
+
+
+@Auth.auth_required
+def get_me():
+    '''
+    Get owners user information (me)
+    '''
+
+    user = UserModel.get_one_user(g.user.get('id'))
+    ser_user = user_schema.dump(user).data
+    return custom_response(ser_user, 200)
+
+@user_api.route('/me', methods=['PUT'])
+@Auth.auth_required
+def update():
+    '''
+    Allows owner of profile (me)
+    to update the user information
+    '''
+
+    req_data = request.get_json()
+    data, error = user_schema.load(req_data, partial=True)
+    if error:
+        return custom_response(error, 400)
+
+    user = UserModel.get_one_user(g.user.get('id'))
+    user.update(data)
+    ser_user = user_schema.dump(user).data
+    return custom_response(ser_user, 200)
 
 
 @user_api.route('/all', methods=['GET'])
@@ -68,18 +97,6 @@ def get_user(user_id):
     if not user:
         return custom_response({'error': 'user not found'}, 404)
 
-    ser_user = user_schema.dump(user).data
-    return custom_response(ser_user, 200)
-
-
-@user_api.route('/me', methods=['GET'])
-@Auth.auth_required
-def get_me():
-    '''
-    Get owners user information (me)
-    '''
-
-    user = UserModel.get_one_user(g.user.get('id'))
     ser_user = user_schema.dump(user).data
     return custom_response(ser_user, 200)
 
@@ -113,25 +130,6 @@ def login():
     token = Auth.generate_token(ser_data.get('id'))
 
     return custom_response({'token': token}, 200)
-
-
-@user_api.route('/me', methods=['PUT'])
-@Auth.auth_required
-def update():
-    '''
-    Allows owner of profile (me)
-    to update the user information
-    '''
-
-    req_data = request.get_json()
-    data, error = user_schema.load(req_data, partial=True)
-    if error:
-        return custom_response(error, 400)
-
-    user = UserModel.get_one_user(g.user.get('id'))
-    user.update(data)
-    ser_user = user_schema.dump(user).data
-    return custom_response(ser_user, 200)
 
 
 def custom_response(res, status_code):
