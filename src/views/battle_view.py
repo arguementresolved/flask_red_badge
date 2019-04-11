@@ -1,9 +1,9 @@
-from flask import request, json, Response, Blueprint, g
+from flask import requests, json, Response, Blueprint, g
 from ..shared.authentication import Auth
 from ..models.battles import BattlesModel
 
 battles_api = Blueprint('battles', __name__)
-# battles_schema = BattlesSchema()
+battles_schema = BattlesSchema()
 
 
 
@@ -23,7 +23,7 @@ def get_fighter(fighter_id):
     return custom_response(ser_battles, 200)
 
 
-@battles_api.route('/', methods=['POST'])
+@battles_api.route('/new', methods=['POST'])
 @Auth.auth_required
 def create():
    
@@ -60,9 +60,7 @@ def battleFunc():
     '''
     INPUT HERO NUMBER
     '''
-    k = input("Enter a number 1 - 731\n> ")
-    l = input("Enter a number 1 - 731\n> ")
-    print("Simulating Battle...")
+    data = request.json()
     # JSON REQUEST AND PROCCESSING OF API
     r = request.get(f'https://superheroapi.com/api/2137552436292179/{k}/powerstats')
     json_data_1 = json.loads(r.text)
