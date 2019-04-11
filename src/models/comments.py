@@ -20,7 +20,6 @@ class BlogPostModel(db.Model):
      
 
         self.owner_id = data.get('owner_id')
-        self.title = data.get('title')
         self.content = data.get('content')
         self.created_at = datetime.utcnow()
         self.modified_at = datetime.utcnow()
