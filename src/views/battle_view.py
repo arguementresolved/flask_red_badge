@@ -53,7 +53,9 @@ def create():
     return custom_response({'token': token}, 201)
 
 
+
 @battles_api.route('/calc', methods=["POST"])
+
 def battleFunc():
     '''
     INPUT HERO NUMBER
