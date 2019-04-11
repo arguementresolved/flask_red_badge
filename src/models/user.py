@@ -12,8 +12,6 @@ class UserModel(db.Model):
     email = db.Column(db.String(128), unique=True, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(128), nullable=False)
-    comments = db.Column(db.Integer, foreign_key=True)
-    recent_battles = db.Column(db.Integer, foreign_key=True)
     # navigational property
 
     def __init__(self, data):

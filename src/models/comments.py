@@ -20,7 +20,6 @@ class BlogPostModel(db.Model):
      
 
         self.owner_id = data.get('owner_id')
-        self.title = data.get('title')
         self.content = data.get('content')
         self.created_at = datetime.utcnow()
         self.modified_at = datetime.utcnow()
@@ -57,7 +56,6 @@ class BlogPostModel(db.Model):
 # models/blog_post.py
 class BlogPostSchema(Schema):
     id = fields.Int(dump_only=True)
-    title = fields.Str(required=True)
     content = fields.Str(required=True)
     owner_id = fields.Int(required=True)
     created_at = fields.DateTime(dump_only=True)
