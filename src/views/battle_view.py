@@ -7,7 +7,6 @@ import requests
 battles_api = Blueprint('battles', __name__)
 battles_schema = BattlesSchema()
 
-
 @battles_api.route('/search', methods=['POST'])
 def get_fighter():
     '''
@@ -28,17 +27,14 @@ def battleFunc():
     '''
     INPUT HERO NUMBER
     '''
-
+    
     req_data = request.get_json()
     k = req_data["k"]
     l = req_data["l"]
 
     # JSON REQUEST AND PROCCESSING OF API
-    r = request.get(f'https://superheroapi.com/api/2137552436292179/{k}/powerstats'.format(k))
-    json_data_1 = json.loads(r.text)
-
-    q = request.get(f'https://superheroapi.com/api/2137552436292179/{l}/powerstats'.format(l))
-    json_data_2 = json.loads(q.text)
+    json_data_1 = get_powerstats(k)
+    json_data_2 = get_powerstats(l)
 
 
     '''
