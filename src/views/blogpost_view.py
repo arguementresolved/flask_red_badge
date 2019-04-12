@@ -34,7 +34,7 @@ def create():
 def delete(id):
 
 
-    post = CommentsModel.get_one_blogpost(id)
+    post = CommentsModel.get_one_comments(id)
 
     if not post:
         return custom_response({'error': 'post not found'},
