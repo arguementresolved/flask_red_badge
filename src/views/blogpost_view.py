@@ -34,7 +34,7 @@ def create():
 def delete(id):
 
 
-    post = CommentsModel.get_one_blogpost(id)
+    post = CommentsModel.get_one_comments(id)
 
     if not post:
         return custom_response({'error': 'post not found'},
@@ -53,7 +53,7 @@ def delete(id):
 def get_all():
     
 
-    posts = CommentsModel.get_all_blogposts()
+    posts = CommentsModel.get_all_comments()
     data = comments_schema.dump(posts, many=True).data
     return custom_response(data, 200)
 

@@ -5,12 +5,13 @@ from . import db, bcrypt
 from marshmallow import Schema, fields
 
 
-apiUrl = 'https://superheroapi.com/api/2137552436292179';
+apiUrl = 'https://superheroapi.com/api/2137552436292179/';
 
 # Example:
 # https://superheroapi.com/try-now.html
 
 # API source rights: Copyright 2017 © TwentyEight10
+
 
 class BattlesModel(db.Model):
     __tablename__ = 'battles'
@@ -30,22 +31,21 @@ class BattlesModel(db.Model):
     def __repr__(self):
         return f'<id {self.id}>'
 
-
     @staticmethod
     def get_name(value):
         return BattlesModel.query.filter_by(Hero_names=value).first()
 
     @staticmethod
     def get_fighter_id(fighter_id):
-        g = requests.get(f'{apiUrl}/{fighter_id}')
-        return g.text
+        g = requests.get(f'{apiUrl}{fighter_id}')
+        json_data = json.loads(g.text)
+        x = {
+            'name': json_data['name'],
+            'id': json_data['id'],
+            'powerstats': json_data['powerstats']
+        },
 
-    # THIS NEEDS TO SEARCH THE SUPERHERO API
-    # RIGHT NOW ITS SEARCHING THE DATABASE SO IT WILL ALWAYS SHOW A 404
-    # TECHNICALLY WORKING THOUGH!
-    def get_fighter_id(id):
-        return BattlesModel.query.get(id)
-
+        return x
 
 
 class BattlesSchema(Schema):
