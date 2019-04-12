@@ -1,74 +1,40 @@
 from flask import json, request, Response, Blueprint, g
 from ..shared.authentication import Auth
 from ..models.battles import BattlesModel, BattlesSchema
+from ..models.user import UserModel
 import requests
 
 battles_api = Blueprint('battles', __name__)
 battles_schema = BattlesSchema()
 
-@battles_api.route('/recent', methods=['POST'])
-
+@battles_api.route('/search', methods=['POST'])
 def get_fighter():
     '''
     Get info from ID, off of the API
     '''
-   
     req_data = request.get_json()
     fighter_id = req_data['fighter_id']
-   
+
     fighter = BattlesModel.get_fighter_id(fighter_id)
     if not fighter:
-        return custom_response({'error': 'Figher not found!'}, 404)
+        return custom_response({'error': 'Fighter not found!'}, 404)
 
-    ser_battles = battles_schema.dump(battles).data
-    return custom_response(ser_battles, 200)
+    return custom_response(fighter, 200)
 
-
-@battles_api.route('/new', methods=['POST'])
-@Auth.auth_required
-def create():
-   
-    '''
-    Create endpoint for battles api
-    '''
-
-    req_data = request.get_json()
-    data, error = battles_schema.load(req_data)
-
-    if error:
-        return custom_response(error, 400)
-
-    # check if user already exists in db
-    battles_in_db = BattlesModel.get_name(data.get('Hero_names'))
-    if battles_in_db:
-        message = {'error': 'User already exists, please supply another email address'}
-        return custom_response(message, 400)
-
-    user = BattlesModel(data)
-    user.save()
-
-    ser_data = user_schema.dump(user).data
-
-    token = Auth.generate_token(ser_data.get('id'))
-
-    return custom_response({'token': token}, 201)
 
 @battles_api.route('/calc', methods=["POST"])
 def battleFunc():
     '''
     INPUT HERO NUMBER
     '''
-
+    
     req_data = request.get_json()
-    req_data["k"] = k
-    req_data["l"] = l
+    k = req_data["k"]
+    l = req_data["l"]
 
     # JSON REQUEST AND PROCCESSING OF API
-    r = request.get(f'https://superheroapi.com/api/2137552436292179/{k}/powerstats'.format(k))
-    json_data_1 = json.loads(r.text)
-
-    q = request.get(f'https://superheroapi.com/api/2137552436292179/{l}/powerstats'.format(l))
-    json_data_2 = json.loads(q.text)
+    json_data_1 = get_powerstats(k)
+    json_data_2 = get_powerstats(l)
 
 
     '''
@@ -226,20 +192,21 @@ def battleFunc():
     Also, it implements the TIEBREAKER Stat (g1 and g2), if needed.
     '''
     if x > y:
-        print(f'{z1} would win!')
+        winner = f'{z1} would win!'
     elif x < y:
-        print(f'{z2} would win!')
+        winner = f'{z2} would win!'
     elif x == y:
         if g1 > g2:
-            print(f'{z1} would win!')
+            winner = f'{z1} would win!'
         elif g1 < g2:
-            print(f'{z2} would win!')
+            winner = f'{z2} would win!'
         elif g1 == g2:
-            print(f'{z1} vs. {z2} would result in a stalmate!')
+            winner = f'{z1} vs. {z2} would result in a stalmate!'
+
+    return custom_response(winner, 200)
 
 
 def custom_response(res, status_code):
-
     return Response(
         mimetype='application/json',
         response=json.dumps(res),

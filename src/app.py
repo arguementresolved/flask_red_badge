@@ -12,7 +12,6 @@ def create_app(env_name):
     '''
     Create App
     '''
-
     # app initilaztion
     app = Flask(__name__)
 
@@ -35,4 +34,5 @@ def create_app(env_name):
 # @login_required
 # def profile():
     # image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+
     # return render_template('profile.html', title='Profile', image_file=image_file)

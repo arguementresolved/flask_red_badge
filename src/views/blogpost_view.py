@@ -53,7 +53,7 @@ def delete(id):
 def get_all():
     
 
-    posts = CommentsModel.get_all_blogposts()
+    posts = CommentsModel.get_all_comments()
     data = comments_schema.dump(posts, many=True).data
     return custom_response(data, 200)
 
