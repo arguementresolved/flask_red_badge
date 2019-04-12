@@ -1,4 +1,4 @@
-from flask import json, Response, Blueprint, g
+from flask import json, request, Response, Blueprint, g
 from ..shared.authentication import Auth
 from ..models.battles import BattlesModel, BattlesSchema
 import requests
@@ -6,13 +6,17 @@ import requests
 battles_api = Blueprint('battles', __name__)
 battles_schema = BattlesSchema()
 
-@battles_api.route('/recent', methods=['GET'])
+@battles_api.route('/recent', methods=['POST'])
 
-def get_fighter(fighter_id):
+def get_fighter():
     '''
     Get info from ID, off of the API
     '''
-    fighter = BattlesModel.get_one_user(fighter_id)
+   
+    req_data = request.get_json()
+    fighter_id = req_data['fighter_id']
+   
+    fighter = BattlesModel.get_fighter_id(fighter_id)
     if not fighter:
         return custom_response({'error': 'Figher not found!'}, 404)
 
@@ -35,7 +39,7 @@ def create():
         return custom_response(error, 400)
 
     # check if user already exists in db
-    battles_in_db = BattlesModel.get_battles_by_Hero_names(data.get('Hero_names'))
+    battles_in_db = BattlesModel.get_name(data.get('Hero_names'))
     if battles_in_db:
         message = {'error': 'User already exists, please supply another email address'}
         return custom_response(message, 400)
@@ -50,17 +54,20 @@ def create():
     return custom_response({'token': token}, 201)
 
 @battles_api.route('/calc', methods=["POST"])
-
 def battleFunc():
     '''
     INPUT HERO NUMBER
     '''
-    data = request.json()
+
+    req_data = request.get_json()
+    req_data["k"] = k
+    req_data["l"] = l
+
     # JSON REQUEST AND PROCCESSING OF API
-    r = request.get(f'https://superheroapi.com/api/2137552436292179/{k}/powerstats')
+    r = request.get(f'https://superheroapi.com/api/2137552436292179/{}/powerstats'.format(k))
     json_data_1 = json.loads(r.text)
 
-    q = request.get(f'https://superheroapi.com/api/2137552436292179/{l}/powerstats')
+    q = request.get(f'https://superheroapi.com/api/2137552436292179/{}/powerstats'.format(l))
     json_data_2 = json.loads(q.text)
 
 
@@ -229,3 +236,12 @@ def battleFunc():
             print(f'{z2} would win!')
         elif g1 == g2:
             print(f'{z1} vs. {z2} would result in a stalmate!')
+
+
+def custom_response(res, status_code):
+
+    return Response(
+        mimetype='application/json',
+        response=json.dumps(res),
+        status=status_code
+    )

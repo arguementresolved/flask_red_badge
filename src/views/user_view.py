@@ -29,8 +29,7 @@ def create():
     user.save()
 
     ser_data = user_schema.dump(user).data
-    print("--------------------------------------------------------------")
-    print(ser_data)
+
 
     token = Auth.generate_token(ser_data['id'])
 

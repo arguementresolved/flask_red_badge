@@ -4,6 +4,7 @@ import json
 from . import db, bcrypt
 from marshmallow import Schema, fields
 
+const apiUrl = 'https://superheroapi.com/api/2137552436292179';
 
 # Example:
 # https://superheroapi.com/try-now.html
@@ -27,6 +28,16 @@ class BattlesModel(db.Model):
 
     def __repr__(self):
         return f'<id {self.id}>'
+
+
+    @staticmethod
+    def get_name(value):
+        return BattlesModel.query.filter_by(Hero_names=value).first()
+
+    @staticmethod
+    def get_fighter_id(fighter_id):
+        g = requests.get{{apiUrl}}/{{fighter_id}}
+        return g.text
 
 
 class BattlesSchema(Schema):
