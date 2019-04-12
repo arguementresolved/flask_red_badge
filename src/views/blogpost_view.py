@@ -7,44 +7,40 @@ from ..shared.authentication import Auth
 from ..models.comments import CommentsModel, CommentsSchema
 
 
-blogpost_api = Blueprint('blogpost_api', __name__)
-blogpost_schema = CommentsSchema()
+comment_api = Blueprint('comment_api', __name__)
+comments_schema = CommentsSchema()
 
 
-@blogpost_api.route('/', methods=['POST'])
+@comment_api.route('/', methods=['POST'])
 @Auth.auth_required
 def create():
     req_data = request.get_json()
     req_data['owner_id'] = g.user['id']
-    data, error = blogpost_schema.load(req_data)
+    data, error = comments_schema.load(req_data)
 
     if error:
         print(error)
         return custom_response(error, 404)
 
-    post = BlogPostModel(data)
+    post = CommentsModel(data)
     post.save()
 
-    data = blogpost_schema.dump(post).data
+    data = comments_schema.dump(post).data
     return custom_response(data, 201)
 
 
-@blogpost_api.route('/<int:id>', methods=['DELETE'])
+@comment_api.route('/<int:id>', methods=['DELETE'])
 @Auth.auth_required
 def delete(id):
-    '''
-    Deletes a blog post
-    only owner of post
-    can  delete the post
-    '''
 
-    post = BlogPostModel.get_one_blogpost(id)
+
+    post = CommentsModel.get_one_blogpost(id)
 
     if not post:
         return custom_response({'error': 'post not found'},
                                404)
 
-    data = blogpost_schema.dump(post).data
+    data = comments_schema.dump(post).data
     if data.get('owner_id') != g.user.get('id'):
         return custom_response({'error': 'permission denied'}, 400)
 
@@ -52,59 +48,52 @@ def delete(id):
     return custom_response({'message': 'deleted'}, 204)
 
 
-@blogpost_api.route('/', methods=['GET'])
+@comment_api.route('/', methods=['GET'])
 @Auth.auth_required
 def get_all():
-    '''
-    returns all blog BlogPostSchema
-    '''
+    
 
-    posts = BlogPostModel.get_all_blogposts()
-    data = blogpost_schema.dump(posts, many=True).data
+    posts = CommentsModel.get_all_blogposts()
+    data = comments_schema.dump(posts, many=True).data
     return custom_response(data, 200)
 
 
-@blogpost_api.route('/<int:blogpost_id>', methods=["GET"])
+@comment_api.route('/<int:comments_id>', methods=["GET"])
 @Auth.auth_required
-def get_one(blogpost_id):
+def get_one(comments_id):
 
-    post = BlogPostModel.get_one_blogpost(blogpost_id)
+    post = CommentsModel.get_one_comments(comments_id)
 
     if not post:
         return custom_response({'error': 'post not found'}, 404)
 
-    data = blogpost_schema.dump(post).data
+    data = comments_schema.dump(post).data
 
     return custom_response(data, 200)
 
 
-@blogpost_api.route('/<int:blogpost_id>', methods=['PUT'])
+@comment_api.route('/<int:comment_id>', methods=['PUT'])
 @Auth.auth_required
-def update(blogpost_id):
-    '''
-    Update a blog posts
-    only owners of post can
-    edit the post
-    '''
+def update(comment_id):
 
     req_data = request.get_json()
-    post = BlogPostModel.get_one_blogpost(blogpost_id)
+    post = CommentsModel.get_one_comments(comment_id)
 
     if not post:
         return custom_response({'error': 'post not found'}, 404)
 
-    data = blogpost_schema.dump(post).data
+    data = comments_schema.dump(post).data
 
     if data.get('owner_id') != g.user.get('id'):
         return custom_response({'error': 'permission denied'}, 400)
 
-    data, error = blogpost_schema.load(req_data, partial=True)
+    data, error = comments_schema.load(req_data, partial=True)
 
     if error:
         return custom_response(error, 400)
 
     post.update(data)
-    data = blogpost_schema.dump(post).data
+    data = comments_schema.dump(post).data
     return custom_response(data, 200)
 
 
