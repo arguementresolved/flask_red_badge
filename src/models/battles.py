@@ -4,6 +4,7 @@ import json
 from . import db, bcrypt
 from marshmallow import Schema, fields
 
+const apiUrl = 'https://superheroapi.com/api/2137552436292179';
 
 # Example:
 # https://superheroapi.com/try-now.html
@@ -34,11 +35,16 @@ class BattlesModel(db.Model):
         return BattlesModel.query.filter_by(Hero_names=value).first()
 
     @staticmethod
+    def get_fighter_id(fighter_id):
+        g = requests.get{{apiUrl}}/{{fighter_id}}
+        return g.text
+
     # THIS NEEDS TO SEARCH THE SUPERHERO API
     # RIGHT NOW ITS SEARCHING THE DATABASE SO IT WILL ALWAYS SHOW A 404
     # TECHNICALLY WORKING THOUGH!
     def get_fighter_id(id):
         return BattlesModel.query.get(id)
+
 
 
 class BattlesSchema(Schema):

@@ -30,6 +30,7 @@ def create():
 
     ser_data = user_schema.dump(user).data
 
+
     token = Auth.generate_token(ser_data['id'])
 
     return custom_response({'token': token}, 201)

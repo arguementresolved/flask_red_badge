@@ -60,14 +60,14 @@ def battleFunc():
     '''
 
     req_data = request.get_json()
-    req_data['k'] = k
-    req_data['l'] = l
+    req_data["k"] = k
+    req_data["l"] = l
 
     # JSON REQUEST AND PROCCESSING OF API
-    r = request.get(f'https://superheroapi.com/api/2137552436292179/{k}/powerstats')
+    r = request.get(f'https://superheroapi.com/api/2137552436292179/{}/powerstats'.format(k))
     json_data_1 = json.loads(r.text)
 
-    q = request.get(f'https://superheroapi.com/api/2137552436292179/{l}/powerstats')
+    q = request.get(f'https://superheroapi.com/api/2137552436292179/{}/powerstats'.format(l))
     json_data_2 = json.loads(q.text)
 
 
