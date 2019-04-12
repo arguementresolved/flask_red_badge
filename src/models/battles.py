@@ -4,7 +4,7 @@ import json
 from . import db, bcrypt
 from marshmallow import Schema, fields
 
-const apiUrl = 'https://superheroapi.com/api/2137552436292179';
+apiUrl = 'https://superheroapi.com/api/2137552436292179';
 
 # Example:
 # https://superheroapi.com/try-now.html
@@ -36,7 +36,7 @@ class BattlesModel(db.Model):
 
     @staticmethod
     def get_fighter_id(fighter_id):
-        g = requests.get{{apiUrl}}/{{fighter_id}}
+        g = requests.get(f'{apiUrl}/{fighter_id}')
         return g.text
 
     # THIS NEEDS TO SEARCH THE SUPERHERO API
