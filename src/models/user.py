@@ -11,7 +11,6 @@ class UserModel(db.Model):
     username = db.Column(db.String(128), nullable=False)
     email = db.Column(db.String(128), unique=True, nullable=False)
     password = db.Column(db.String(128), nullable=False)
-    profilePic = db.Column(db.String(100), nullable=False, default='default.jpg')
     # navigational property
 
     def __init__(self, data):

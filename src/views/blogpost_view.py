@@ -4,11 +4,11 @@ import json
 
 from flask import request, g, Blueprint, json, Response
 from ..shared.authentication import Auth
-from ..models.comments import BlogPostModel, BlogPostSchema
+from ..models.comments import CommentsModel, CommentsSchema
 
 
 blogpost_api = Blueprint('blogpost_api', __name__)
-blogpost_schema = BlogPostSchema()
+blogpost_schema = CommentsSchema()
 
 
 @blogpost_api.route('/', methods=['POST'])

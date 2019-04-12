@@ -39,6 +39,13 @@ class BattlesModel(db.Model):
         g = requests.get{{apiUrl}}/{{fighter_id}}
         return g.text
 
+    # THIS NEEDS TO SEARCH THE SUPERHERO API
+    # RIGHT NOW ITS SEARCHING THE DATABASE SO IT WILL ALWAYS SHOW A 404
+    # TECHNICALLY WORKING THOUGH!
+    def get_fighter_id(id):
+        return BattlesModel.query.get(id)
+
+
 
 class BattlesSchema(Schema):
     id = fields.Int(dump_only=True)
