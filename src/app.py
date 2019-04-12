@@ -24,7 +24,7 @@ def create_app(env_name):
 
     app.register_blueprint(user_api, url_prefix='/api/v1/users')
     app.register_blueprint(profile_blueprint, url_prefix='/api/v1/profiles')
-    app.register_blueprint(blog_blueprint, url_prefix='/api/v1/blogpost')
+    app.register_blueprint(blog_blueprint, url_prefix='/api/v1/comments')
     app.register_blueprint(battles_blueprint, url_prefix='/api/v1/battles')
 
     bcrypt.init_app(app)
