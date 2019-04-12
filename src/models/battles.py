@@ -12,6 +12,7 @@ apiUrl = 'https://superheroapi.com/api/2137552436292179/';
 
 # API source rights: Copyright 2017 © TwentyEight10
 
+
 class BattlesModel(db.Model):
     __tablename__ = 'battles'
 
@@ -30,14 +31,13 @@ class BattlesModel(db.Model):
     def __repr__(self):
         return f'<id {self.id}>'
 
-
     @staticmethod
     def get_name(value):
         return BattlesModel.query.filter_by(Hero_names=value).first()
 
     @staticmethod
     def get_fighter_id(fighter_id):
-        
+
         g = requests.get(f'{apiUrl}{fighter_id}')
         json_data = json.loads(g.text)
         x = {
@@ -69,7 +69,6 @@ class BattlesModel(db.Model):
 
     # def get_fighter_id(id):
     #     return BattlesModel.query.get()
-
 
 
 

@@ -8,15 +8,13 @@ battles_api = Blueprint('battles', __name__)
 battles_schema = BattlesSchema()
 
 @battles_api.route('/search', methods=['POST'])
-
 def get_fighter():
     '''
     Get info from ID, off of the API
     '''
-   
     req_data = request.get_json()
     fighter_id = req_data['fighter_id']
-   
+
     fighter = BattlesModel.get_fighter_id(fighter_id)
     if not fighter:
         return custom_response({'error': 'Fighter not found!'}, 404)
