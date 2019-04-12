@@ -7,6 +7,7 @@ from flask_cors import CORS
 from .views.profile_view import profile_api as profile_blueprint
 from .views.user_view import user_api as user_blueprint
 from .views.blogpost_view import comment_api as comment_blueprint
+
 from .views.battle_view import battles_api as battles_blueprint
 
 def create_app(env_name):

@@ -14,7 +14,7 @@ class ProfileModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     created_at = db.Column(db.DateTime)
-    Username = db.Column(db.String(250), unique=True)
+    username = db.Column(db.String(250), unique=True)
     ProfilePic = db.Column(db.String(250), nullable=True)
     bio = db.Column(db.String(250), nullable=True)
     
@@ -23,7 +23,7 @@ class ProfileModel(db.Model):
         self.owner_id = data.get('owner_id')
         self.content = data.get('content')
         self.created_at = datetime.utcnow()
-        self.Username = data.get('Username')
+        self.username = data.get('username')
         self.ProfilePic = data.get('ProfilePic')
         self.bio = data.get('bio')
         
