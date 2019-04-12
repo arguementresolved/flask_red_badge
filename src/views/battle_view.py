@@ -1,6 +1,7 @@
-from flask import requests, json, Response, Blueprint, g
+from flask import json, Response, Blueprint, g
 from ..shared.authentication import Auth
-from ..models.battles import BattlesModel
+from ..models.battles import BattlesModel, BattlesSchema
+import requests
 
 battles_api = Blueprint('battles', __name__)
 battles_schema = BattlesSchema()
@@ -234,4 +235,3 @@ def battleFunc():
             print(f'{z2} would win!')
         elif g1 == g2:
             print(f'{z1} vs. {z2} would result in a stalmate!')
-
