@@ -1,17 +1,10 @@
 from flask import json, Response, Blueprint, g
 from ..shared.authentication import Auth
 from ..models.battles import BattlesModel, BattlesSchema
-
-
 import requests
-
 
 battles_api = Blueprint('battles', __name__)
 battles_schema = BattlesSchema()
-
-
-
-
 
 @battles_api.route('/recent', methods=['GET'])
 
@@ -20,7 +13,7 @@ def get_fighter(fighter_id):
     Get info from ID, off of the API
     '''
     fighter = BattlesModel.get_one_user(fighter_id)
-    if not figher:
+    if not fighter:
         return custom_response({'error': 'Figher not found!'}, 404)
 
     ser_battles = battles_schema.dump(battles).data
@@ -55,8 +48,6 @@ def create():
     token = Auth.generate_token(ser_data.get('id'))
 
     return custom_response({'token': token}, 201)
-
-
 
 @battles_api.route('/calc', methods=["POST"])
 
