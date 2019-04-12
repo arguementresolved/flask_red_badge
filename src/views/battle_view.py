@@ -27,15 +27,20 @@ def battleFunc():
     '''
     INPUT HERO NUMBER
     '''
-    
+
     req_data = request.get_json()
     k = req_data["k"]
     l = req_data["l"]
 
     # JSON REQUEST AND PROCCESSING OF API
-    json_data_1 = get_powerstats(k)
-    json_data_2 = get_powerstats(l)
+    json_data_1 = BattlesModel.get_powerstats(k)
+    json_data_2 = BattlesModel.get_powerstats(l)
 
+    print(json_data_1)
+    print(json_data_1[0])
+
+    for i in json_data_1[0]:
+        print(i)
 
     '''
     STARTING COUNTERS
@@ -49,39 +54,40 @@ def battleFunc():
     This takes in the stats of the 1st inputted hero from the API, checks for nulls,
     and takes the name of the first hero.
     '''
-    for i in json_data_1:
+
+    for i in json_data_1[0]:
         if i == 'name':
-            z1 = json_data_1[i]
+            z1 = i
         if i == 'intelligence':
-            if (json_data_1[i]) == 'null':
+            if i == 'null':
                 a1 = 0
             else:
-                a1 = int(json_data_1[i])
+                a1 = i
         if i == 'strength':
-            if (json_data_1[i]) == 'null':
+            if i == 'null':
                 b1 = 0
             else:
-                b1 = int(json_data_1[i])
+                b1 = i
         if i == 'speed':
-            if (json_data_1[i]) == 'null':
+            if i == 'null':
                 c1 = 0
             else:
-                c1 = int(json_data_1[i])
+                c1 = i
         if i == 'durability':
-            if (json_data_1[i]) == 'null':
+            if i == 'null':
                 d1 = 0
             else:
-                d1 = int(json_data_1[i])
+                d1 = i
         if i == 'power':
-            if (json_data_1[i]) == 'null':
+            if i == 'null':
                 e1 = 0
             else:
-                e1 = int(json_data_1[i])
+                e1 = i
         if i == 'combat':
-            if (json_data_1[i]) == 'null':
+            if i == 'null':
                 f1 = 0
             else:
-                f1 = int(json_data_1[i])
+                f1 = i
     g1 = a1 + b1 + c1 + d1 + e1 + f1
 
     '''
