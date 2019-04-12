@@ -4,6 +4,7 @@ import json
 from . import db, bcrypt
 from marshmallow import Schema, fields
 
+
 apiUrl = 'https://superheroapi.com/api/2137552436292179';
 
 # Example:
