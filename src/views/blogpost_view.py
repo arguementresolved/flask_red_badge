@@ -32,11 +32,7 @@ def create():
 @comment_api.route('/<int:id>', methods=['DELETE'])
 @Auth.auth_required
 def delete(id):
-    '''
-    Deletes a blog post
-    only owner of post
-    can  delete the post
-    '''
+
 
     post = CommentsModel.get_one_blogpost(id)
 
@@ -55,9 +51,7 @@ def delete(id):
 @comment_api.route('/', methods=['GET'])
 @Auth.auth_required
 def get_all():
-    '''
-    returns all blog BlogPostSchema
-    '''
+    
 
     posts = CommentsModel.get_all_blogposts()
     data = comments_schema.dump(posts, many=True).data
@@ -66,9 +60,9 @@ def get_all():
 
 @comment_api.route('/<int:comments_id>', methods=["GET"])
 @Auth.auth_required
-def get_one(blogpost_id):
+def get_one(comments_id):
 
-    post = CommentsModel.get_one_comments(blogpost_id)
+    post = CommentsModel.get_one_comments(comments_id)
 
     if not post:
         return custom_response({'error': 'post not found'}, 404)
@@ -78,17 +72,12 @@ def get_one(blogpost_id):
     return custom_response(data, 200)
 
 
-@comment_api.route('/<int:blogpost_id>', methods=['PUT'])
+@comment_api.route('/<int:comment_id>', methods=['PUT'])
 @Auth.auth_required
-def update(blogpost_id):
-    '''
-    Update a blog posts
-    only owners of post can
-    edit the post
-    '''
+def update(comment_id):
 
     req_data = request.get_json()
-    post = CommentsModel.get_one_blogpost(blogpost_id)
+    post = CommentsModel.get_one_comments(comment_id)
 
     if not post:
         return custom_response({'error': 'post not found'}, 404)
