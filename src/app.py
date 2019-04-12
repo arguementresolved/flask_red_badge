@@ -29,10 +29,6 @@ def create_app(env_name='development'):
     bcrypt.init_app(app)
     db.init_app(app)
 
-    @app.route('/')
-    def index():
-        return 'TESTING HERE'
-
     return app
 
 # @app.route("/profile", methods=['GET', 'POST'])
