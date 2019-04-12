@@ -1,6 +1,6 @@
 from flask import requests, json, Response, Blueprint, g
 from ..shared.authentication import Auth
-from ..models.battles import BattlesModel
+from ..models.battles import BattlesModel, BattlesSchema
 
 battles_api = Blueprint('battles', __name__)
 battles_schema = BattlesSchema()
