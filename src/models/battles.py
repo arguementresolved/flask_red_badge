@@ -50,12 +50,17 @@ class BattlesModel(db.Model):
 
     @staticmethod
     def get_powerstats(fighter_id):
-        
+
         g = requests.get(f'{apiUrl}{fighter_id}')
         json_data = json.loads(g.text)
         x = {
             'name': json_data['name'],
-            'powerstats': json_data['powerstats']
+            'intelligence': json_data['powerstats']['intelligence'],
+            'strength': json_data['powerstats']['strength'],
+            'speed': json_data['powerstats']['speed'],
+            'durability': json_data['powerstats']['durability'],
+            'power': json_data['powerstats']['power'],
+            'combat': json_data['powerstats']['combat']
         },
 
         return x
