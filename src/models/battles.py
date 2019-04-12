@@ -4,7 +4,7 @@ import json
 from . import db, bcrypt
 from marshmallow import Schema, fields
 
-const apiUrl = 'https://superheroapi.com/api/2137552436292179';
+const apiUrl = 'https://superheroapi.com/api/2137552436292179'
 
 # Example:
 # https://superheroapi.com/try-now.html
