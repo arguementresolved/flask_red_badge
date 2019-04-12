@@ -29,6 +29,18 @@ class BattlesModel(db.Model):
         return f'<id {self.id}>'
 
 
+    @staticmethod
+    def get_name(value):
+        return BattlesModel.query.filter_by(Hero_names=value).first()
+
+    @staticmethod
+    # THIS NEEDS TO SEARCH THE SUPERHERO API
+    # RIGHT NOW ITS SEARCHING THE DATABASE SO IT WILL ALWAYS SHOW A 404
+    # TECHNICALLY WORKING THOUGH!
+    def get_fighter_id(id):
+        return BattlesModel.query.get(id)
+
+
 class BattlesSchema(Schema):
     id = fields.Int(dump_only=True)
     Hero_names = fields.Str(required=True)
