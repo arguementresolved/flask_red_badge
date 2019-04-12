@@ -2,6 +2,7 @@ from flask import json, Response, Blueprint, g
 from ..shared.authentication import Auth
 from ..models.battles import BattlesModel, BattlesSchema
 
+
 import requests
 
 
