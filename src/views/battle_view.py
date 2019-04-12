@@ -31,8 +31,8 @@ def battleFunc():
     '''
     
     req_data = request.get_json()
-    k.text = req_data["k"]
-    l.text = req_data["l"]
+    k = req_data["k"]
+    l = req_data["l"]
 
     # JSON REQUEST AND PROCCESSING OF API
     json_data_1 = get_powerstats(k)
