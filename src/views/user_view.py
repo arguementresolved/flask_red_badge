@@ -24,13 +24,11 @@ def create():
     if user_in_db:
         message = {'error': 'User already exists, please supply another email address'}
         return custom_response(message, 400)
-
+    
     user = UserModel(data)
     user.save()
 
     ser_data = user_schema.dump(user).data
-    print("--------------------------------------------------------------")
-    print(ser_data)
 
     token = Auth.generate_token(ser_data['id'])
 
@@ -48,16 +46,16 @@ def delete():
     user.delete()
     return custom_response({'message': 'deleted'}, 204)
 
+# @user_api.route('/profile/me', methods=["GET"])
+# @Auth.auth_required
+# def get_me():
+#     '''
+#     Get owners user information (me)
+#     '''
 
-@Auth.auth_required
-def get_me():
-    '''
-    Get owners user information (me)
-    '''
-
-    user = UserModel.get_one_user(g.user.get('id'))
-    ser_user = user_schema.dump(user).data
-    return custom_response(ser_user, 200)
+#     user = UserModel.get_one_user(g.user.get('id'))
+#     ser_user = user_schema.dump(user).data
+#     return custom_response(ser_user, 200)
 
 @user_api.route('/me', methods=['PUT'])
 @Auth.auth_required
