@@ -8,16 +8,26 @@ from ..shared.authentication import Auth
 profile_api = Blueprint('profiles', __name__)
 profile_schema = ProfileSchema()
 
-# @user_api.route('/<int:user_id>', methods=['POST'])
-# @Auth.auth_required
-# def create_profile(user_id):
-    
-#     req_data = requests.get_json()
+@profile_api.route('/<int:owner_id>', methods=['GET'])
+# read and update
+# deletes with user
+
+
+def get_user(owner_id):
+    '''
+    Get a single user
+    '''
+    user = ProfileModel.get_one_user(owner_id)
+    if not user:
+        return custom_response({'error': 'user not found'}, 404)
+
+    ser_user = profile_schema.dump(user).data
+    return custom_response(ser_user, 200)
     
 @profile_api.route('/', methods=['POST'])
 def create():
     '''
-    Create endpoint for user api
+    Create endpoint for profile api
     '''
 
     req_data = request.get_json()
@@ -27,7 +37,7 @@ def create():
         return custom_response(error, 400)
 
     # check if user already exists in db
-    profile_in_db = ProfileModel.get_user_by_id(data.get('id'))
+    profile_in_db = ProfileModel.get_user_by_username(data.get('username'))
     if profile_in_db:
         message = {'error': 'Profile already exists, please supply another email address'}
         return custom_response(message, 400)
