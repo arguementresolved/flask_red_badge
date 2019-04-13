@@ -8,23 +8,7 @@ from ..shared.authentication import Auth
 profile_api = Blueprint('profiles', __name__)
 profile_schema = ProfileSchema()
 
-# @profile_api.route('/<int:owner_id>', methods=['GET'])
-# read and update
-# deletes with user
 
-    
-# @profile_api.route('/<int:owner_id>', methods=['GET'])
-# def read(owner_id):
-#     '''
-#     Create endpoint for profile api
-#     '''
-
-#     user = ProfileModel.get_one_user(owner_id)
-#     if not user:
-#         return custom_response({'error': 'user not found'}, 404)
-
-#     ser_user = profile_schema.dump(user).data
-#     return custom_response(ser_user, 200)
 @profile_api.route('/', methods=["GET"])
 def profile():
     req_data = request.get_json()
@@ -37,6 +21,7 @@ def profile():
 
     ser_user = profile_schema.dump(owner_id).data
     return custom_response(ser_user, 200)
+
 
 @profile_api.route('/<int:id>', methods=["GET"])
 # @Auth.auth_required
@@ -52,6 +37,7 @@ def get_me(id):
     pro_user = profile_schema.dump(user).data
     return custom_response(pro_user, 200)
 
+
 def custom_response(res, status_code):
     '''
     Creates a custom json response
@@ -63,4 +49,3 @@ def custom_response(res, status_code):
         response=json.dumps(res),
         status=status_code
     )
-

@@ -7,6 +7,7 @@ import requests
 battles_api = Blueprint('battles', __name__)
 battles_schema = BattlesSchema()
 
+
 @battles_api.route('/search', methods=['POST'])
 def get_fighter():
     '''
@@ -36,11 +37,23 @@ def battleFunc():
     json_data_1 = BattlesModel.get_powerstats(k)
     json_data_2 = BattlesModel.get_powerstats(l)
 
-    print(json_data_1)
-    print(json_data_1[0])
 
-    for i in json_data_1[0]:
-        print(i)
+    z1 = json_data_1[0]['name']
+    a1 = json_data_1[0]['intelligence']
+    b1 = json_data_1[0]['strength']
+    c1 = json_data_1[0]['speed']
+    d1 = json_data_1[0]['durability']
+    e1 = json_data_1[0]['power']
+    f1 = json_data_1[0]['combat']
+
+    z2 = json_data_2[0]['name']
+    a2 = json_data_2[0]['intelligence']
+    b2 = json_data_2[0]['strength']
+    c2 = json_data_2[0]['speed']
+    d2 = json_data_2[0]['durability']
+    e2 = json_data_2[0]['power']
+    f2 = json_data_2[0]['combat']
+
 
     '''
     STARTING COUNTERS

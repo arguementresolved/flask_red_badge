@@ -61,6 +61,7 @@ class UserModel(db.Model):
     def get_one_user(id):
         return UserModel.query.filter_by(id=id).first()
 
+
 class UserSchema(Schema):
     id = fields.Int(dump_only=True)
     username = fields.Str(required=True)

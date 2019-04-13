@@ -7,16 +7,13 @@ user_api = Blueprint('users', __name__)
 user_schema = UserSchema()
 
 
-
 @user_api.route('/', methods=['POST'])
 def create():
     '''
     Create endpoint for user api
     '''
-
     req_data = request.get_json()
     data, error = user_schema.load(req_data)
-    
 
     if error:
         return custom_response(error, 400)
@@ -26,16 +23,16 @@ def create():
     if user_in_db:
         message = {'error': 'User already exists, please supply another email address'}
         return custom_response(message, 400)
-    
+
     user = UserModel(data)
     user.save()
 
     ser_data = user_schema.dump(user).data
 
-
     token = Auth.generate_token(ser_data['id'])
 
     return custom_response({'token': token}, 201)
+
 
 @user_api.route('/profile', methods=["GET"])
 @Auth.auth_required
@@ -45,7 +42,7 @@ def profile():
         return custom_response({'error': 'user not found'}, 404)
 
     ser_user = user_schema.dump(user).data
-    return custom_response(ser_user, 200)  
+    return custom_response(ser_user, 200)
 
 
 @user_api.route('/me', methods=["DELETE"])
@@ -69,6 +66,7 @@ def delete():
 #     user = UserModel.get_one_user(g.user.get('id'))
 #     ser_user = user_schema.dump(user).data
 #     return custom_response(ser_user, 200)
+
 
 @user_api.route('/update', methods=['PUT'])
 @Auth.auth_required
@@ -150,7 +148,6 @@ def custom_response(res, status_code):
     Creates a custom json response
     for proper status messages
     '''
-
     return Response(
         mimetype='application/json',
         response=json.dumps(res),
