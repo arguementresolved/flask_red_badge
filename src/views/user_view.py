@@ -1,11 +1,11 @@
 from flask import request, json, Response, Blueprint, g
 from ..models.user import UserModel, UserSchema
-from ..models.profile import ProfileModel, ProfileSchema
 from ..shared.authentication import Auth
 
 
 user_api = Blueprint('users', __name__)
 user_schema = UserSchema()
+
 
 
 @user_api.route('/', methods=['POST'])
@@ -16,13 +16,8 @@ def create():
 
     req_data = request.get_json()
     data, error = user_schema.load(req_data)
+    
 
-    pro_data = {
-        "username": "username",
-        "content": "content",
-        "owner_id": "owner_id"
-    }
-    p = profile_schema.load(pro_data)
     if error:
         return custom_response(error, 400)
 
@@ -33,9 +28,7 @@ def create():
         return custom_response(message, 400)
     
     user = UserModel(data)
-    profile = ProfileModel(p)
     user.save()
-    profile.save()
 
     ser_data = user_schema.dump(user).data
 
@@ -43,6 +36,16 @@ def create():
     token = Auth.generate_token(ser_data['id'])
 
     return custom_response({'token': token}, 201)
+
+@user_api.route('/profile', methods=["GET"])
+@Auth.auth_required
+def profile():
+    user = UserModel.get_one_user(g.user.get('id'))
+    if not user:
+        return custom_response({'error': 'user not found'}, 404)
+
+    ser_user = user_schema.dump(user).data
+    return custom_response(ser_user, 200)  
 
 
 @user_api.route('/me', methods=["DELETE"])
@@ -67,7 +70,7 @@ def delete():
 #     ser_user = user_schema.dump(user).data
 #     return custom_response(ser_user, 200)
 
-@user_api.route('/me', methods=['PUT'])
+@user_api.route('/update', methods=['PUT'])
 @Auth.auth_required
 def update():
     '''
@@ -103,11 +106,11 @@ def get_user(user_id):
     '''
     Get a single user
     '''
-    user = ProfileModel.get_one_user(user_id)
+    user = UserModel.get_one_user(user_id)
     if not user:
         return custom_response({'error': 'user not found'}, 404)
 
-    ser_user = Profile_schema.dump(user).data
+    ser_user = user_schema.dump(user).data
     return custom_response(ser_user, 200)
 
 
