@@ -21,7 +21,6 @@ class ProfileModel(db.Model):
 
     def __init__(self, data):
         self.owner_id = data.get('owner_id')
-        self.content = data.get('content')
         self.created_at = datetime.utcnow()
         self.username = data.get('username')
         self.ProfilePic = data.get('ProfilePic')
@@ -43,7 +42,7 @@ class ProfileModel(db.Model):
 
     @staticmethod
     def get_one_user(id):
-        return ProfileModel.query.get(id)
+        return ProfileModel.query.filter_by(id=id).first()
 
 
 class ProfileSchema(Schema):
