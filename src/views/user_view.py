@@ -12,7 +12,6 @@ pro_data = {
     "owner_id": "owner_id"
 }
 
-
 @user_api.route('/', methods=['POST'])
 def create():
     '''
