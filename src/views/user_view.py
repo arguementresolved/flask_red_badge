@@ -7,9 +7,9 @@ user_api = Blueprint('users', __name__)
 user_schema = UserSchema()
 
 pro_data = {
-    "username": "username",
-    "content": "content",
-    "owner_id": "owner_id"
+        "username": "username",
+        "content": "content",
+        "owner_id": "owner_id"
 }
 
 @user_api.route('/', methods=['POST'])
@@ -123,8 +123,8 @@ def login():
         return custom_response(error, 400)
 
     if not data.get('email') or not data.get('password'):
-        return custom_response({'error': 'email and password' +
-                                         'required to login'})
+        return custom_response({'error': 'email and password ' +
+                                         ' required to login'}, 404)
 
     user = UserModel.get_user_by_email(data.get('email'))
 
