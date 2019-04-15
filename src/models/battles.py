@@ -53,6 +53,7 @@ class BattlesModel(db.Model):
 
         return x
 
+
     @staticmethod
     def get_powerstats(fighter_id):
 
