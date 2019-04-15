@@ -5,7 +5,7 @@ from . import db, bcrypt
 from marshmallow import Schema, fields
 
 
-apiUrl = 'https://superheroapi.com/api/2137552436292179/';
+apiUrl = 'https://superheroapi.com/api/2137552436292179/'
 
 # Example:
 # https://superheroapi.com/try-now.html
@@ -43,33 +43,27 @@ class BattlesModel(db.Model):
         x = {
             'name': json_data['name'],
             'id': json_data['id'],
-            'powerstats': json_data['powerstats']
+            'combat': json_data['powerstats']['combat']
         },
 
         return x
 
     @staticmethod
     def get_powerstats(fighter_id):
-        
+
         g = requests.get(f'{apiUrl}{fighter_id}')
         json_data = json.loads(g.text)
         x = {
             'name': json_data['name'],
-            'powerstats': json_data['powerstats']
+            'intelligence': json_data['powerstats']['intelligence'],
+            'strength': json_data['powerstats']['strength'],
+            'speed': json_data['powerstats']['speed'],
+            'durability': json_data['powerstats']['durability'],
+            'power': json_data['powerstats']['power'],
+            'combat': json_data['powerstats']['combat']
         },
 
         return x
-
-    # I'm going to write this mostly for me and my thought process
-    # it might help you
-    # the "get_fighter_id" needs to be able to send a input of numbers to the 
-    # superhero api then return that hero's info
-    # so you need to beable to take in a fighter_id and send a get request
-    # then return that hero's ifnormation the function that calls this
-
-    # def get_fighter_id(id):
-    #     return BattlesModel.query.get()
-
 
 
 class BattlesSchema(Schema):
