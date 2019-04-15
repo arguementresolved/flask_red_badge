@@ -16,7 +16,7 @@ def create_app(env_name):
     # app initilaztion
     app = Flask(__name__)
 
-    app.config.from_object(app_config['production'])
+    app.config.from_object(app_config['development'])
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     CORS(app)
