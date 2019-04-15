@@ -6,11 +6,12 @@ from ..shared.authentication import Auth
 user_api = Blueprint('users', __name__)
 user_schema = UserSchema()
 
-   pro_data = {
-        "username": "username",
-        "content": "content",
-        "owner_id": "owner_id"
-    }
+pro_data = {
+    "username": "username",
+    "content": "content",
+    "owner_id": "owner_id"
+}
+
 
 @user_api.route('/', methods=['POST'])
 def create():
@@ -33,7 +34,7 @@ def create():
     user = UserModel(data)
     user.save()
 
- 
+
 
     ser_data = user_schema.dump(user).data
 
