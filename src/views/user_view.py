@@ -12,6 +12,7 @@ pro_data = {
         "owner_id": "owner_id"
 }
 
+
 @user_api.route('/', methods=['POST'])
 def create():
     '''
@@ -32,8 +33,6 @@ def create():
 
     user = UserModel(data)
     user.save()
-
-
 
     ser_data = user_schema.dump(user).data
 
