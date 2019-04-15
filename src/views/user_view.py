@@ -21,7 +21,8 @@ def create():
     # check if user already exists in db
     user_in_db = UserModel.get_user_by_email(data.get('email'))
     if user_in_db:
-        message = {'error': 'User already exists, please supply another email address'}
+        message = {'error': 'User already exists, please supply' +
+                            'another email address'}
         return custom_response(message, 400)
 
     user = UserModel(data)
@@ -55,17 +56,6 @@ def delete():
     user = UserModel.get_one_user(g.user.get('id'))
     user.delete()
     return custom_response({'message': 'deleted'}, 204)
-
-# @user_api.route('/profile/me', methods=["GET"])
-# @Auth.auth_required
-# def get_me():
-#     '''
-#     Get owners user information (me)
-#     '''
-
-#     user = UserModel.get_one_user(g.user.get('id'))
-#     ser_user = user_schema.dump(user).data
-#     return custom_response(ser_user, 200)
 
 
 @user_api.route('/update', methods=['PUT'])
@@ -126,7 +116,8 @@ def login():
         return custom_response(error, 400)
 
     if not data.get('email') or not data.get('password'):
-        return custom_response({'error': 'email and password required to login'})
+        return custom_response({'error': 'email and password' +
+                                         'required to login'})
 
     user = UserModel.get_user_by_email(data.get('email'))
 

@@ -37,7 +37,6 @@ def battleFunc():
     json_data_1 = BattlesModel.get_powerstats(k)
     json_data_2 = BattlesModel.get_powerstats(l)
 
-
     z1 = json_data_1[0]['name']
     a1 = json_data_1[0]['intelligence']
     b1 = json_data_1[0]['strength']
@@ -54,7 +53,6 @@ def battleFunc():
     e2 = json_data_2[0]['power']
     f2 = json_data_2[0]['combat']
 
-
     '''
     STARTING COUNTERS
     '''
@@ -64,11 +62,12 @@ def battleFunc():
     '''
     HERO 1
 
-    This takes in the stats of the 1st inputted hero from the API, checks for nulls,
+    This takes in the stats of the 1st inputted hero from
+    the API, checks for nulls,
     and takes the name of the first hero.
     '''
 
-    for i in json_data_1[0]:
+    for i in json_data_1:
         if i == 'name':
             z1 = i
         if i == 'intelligence':
@@ -106,7 +105,8 @@ def battleFunc():
     '''
     HERO 2
 
-    This takes in the stats of the 2nd inputted hero from the API, checks for nulls,
+    This takes in the stats of the 2nd inputted hero
+    from the API, checks for nulls,
     and takes the name of the second hero.
     '''
     for i in json_data_2:
@@ -146,7 +146,6 @@ def battleFunc():
 
     # ADDING TO COUNTERS, USING THE "WIN POINTS"
     # EXAMPLE: a1, b2, d1, etc..
-
 
     # INTELEGENCE
     '''
