@@ -26,12 +26,6 @@ def create_app(env_name):
     app.register_blueprint(comment_blueprint, url_prefix='/api/v1/comments')
     app.register_blueprint(battles_blueprint, url_prefix='/api/v1/battles')
 
-    @app.after_request
-    def after_request(response):
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
-        return response
 
     bcrypt.init_app(app)
     db.init_app(app)
