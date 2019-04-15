@@ -51,8 +51,6 @@ def delete(id):
 @comment_api.route('/', methods=['GET'])
 @Auth.auth_required
 def get_all():
-    
-
     posts = CommentsModel.get_all_comments()
     data = comments_schema.dump(posts, many=True).data
     return custom_response(data, 200)
@@ -98,7 +96,6 @@ def update(comment_id):
 
 
 def custom_response(res, status_code):
-
     return Response(
         mimetype='application/json',
         response=json.dumps(res),

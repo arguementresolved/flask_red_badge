@@ -2,13 +2,9 @@ from . import db, bcrypt
 from datetime import datetime
 
 from marshmallow import fields, Schema
-# from .profile import ProfileModel
-
 
 
 class ProfileModel(db.Model):
-    
-
     __tablename__ = 'profile'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -17,16 +13,13 @@ class ProfileModel(db.Model):
     username = db.Column(db.String(250), unique=True)
     ProfilePic = db.Column(db.String(250), nullable=True)
     bio = db.Column(db.String(250), nullable=True)
-    
 
     def __init__(self, data):
         self.owner_id = data.get('owner_id')
-        self.content = data.get('content')
         self.created_at = datetime.utcnow()
         self.username = data.get('username')
         self.ProfilePic = data.get('ProfilePic')
         self.bio = data.get('bio')
-        
 
     def __repr__(self):
         return f'<id {self.id}>'
@@ -43,7 +36,7 @@ class ProfileModel(db.Model):
 
     @staticmethod
     def get_one_user(id):
-        return ProfileModel.query.get(id)
+        return ProfileModel.query.filter_by(id=id).first()
 
 
 class ProfileSchema(Schema):

@@ -72,6 +72,3 @@ class BattlesSchema(Schema):
     Results = fields.Email(required=True)
     created_at = fields.DateTime(dump_only=True)
     battles = fields.DateTime(dump_only=True)
-
-
-
