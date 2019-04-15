@@ -11,8 +11,6 @@ class UserModel(db.Model):
     username = db.Column(db.String(128), nullable=False)
     email = db.Column(db.String(128), unique=True, nullable=False)
     password = db.Column(db.String(128), nullable=False)
-    created_at = db.Column(db.DateTime)
-    modified_at = db.Column(db.DateTime)
     # navigational property
 
     def __init__(self, data):
@@ -45,6 +43,7 @@ class UserModel(db.Model):
         '''takes in data to modify model'''
         for key, item in data.items():
             if key == 'password':
+                value = 'password'
                 self.password = self._generate_hash(value)
             setattr(self, key, item)
         self.modified_at = datetime.datetime.utcnow()
@@ -60,12 +59,11 @@ class UserModel(db.Model):
 
     @staticmethod
     def get_one_user(id):
-        return UserModel.query.get(id)
+        return UserModel.query.filter_by(id=id).first()
+
 
 class UserSchema(Schema):
     id = fields.Int(dump_only=True)
     username = fields.Str(required=True)
     email = fields.Email(required=True)
     password = fields.Str(required=True)
-    created_at = fields.DateTime(dump_only=True)
-    modified_at = fields.DateTime(dump_only=True)

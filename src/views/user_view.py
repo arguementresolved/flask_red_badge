@@ -6,13 +6,17 @@ from ..shared.authentication import Auth
 user_api = Blueprint('users', __name__)
 user_schema = UserSchema()
 
+pro_data = {
+        "username": "username",
+        "content": "content",
+        "owner_id": "owner_id"
+}
 
 @user_api.route('/', methods=['POST'])
 def create():
     '''
     Create endpoint for user api
     '''
-
     req_data = request.get_json()
     data, error = user_schema.load(req_data)
 
@@ -22,20 +26,34 @@ def create():
     # check if user already exists in db
     user_in_db = UserModel.get_user_by_email(data.get('email'))
     if user_in_db:
-        message = {'error': 'User already exists, please supply another email address'}
+        message = {'error': 'User already exists, please supply' +
+                            'another email address'}
         return custom_response(message, 400)
 
     user = UserModel(data)
     user.save()
 
+
+
     ser_data = user_schema.dump(user).data
 
-    token = Auth.generate_token(ser_data.get('id'))
+    token = Auth.generate_token(ser_data['id'])
 
     return custom_response({'token': token}, 201)
 
 
-@user_api.route('/me', methods=['DELETE'])
+@user_api.route('/profile', methods=["GET"])
+@Auth.auth_required
+def profile():
+    user = UserModel.get_one_user(g.user.get('id'))
+    if not user:
+        return custom_response({'error': 'user not found'}, 404)
+
+    ser_user = user_schema.dump(user).data
+    return custom_response(ser_user, 200)
+
+
+@user_api.route('/me', methods=["DELETE"])
 @Auth.auth_required
 def delete():
     '''
@@ -45,6 +63,25 @@ def delete():
     user = UserModel.get_one_user(g.user.get('id'))
     user.delete()
     return custom_response({'message': 'deleted'}, 204)
+
+
+@user_api.route('/update', methods=['PUT'])
+@Auth.auth_required
+def update():
+    '''
+    Allows owner of profile (me)
+    to update the user information
+    '''
+
+    req_data = request.get_json()
+    data, error = user_schema.load(req_data, partial=True)
+    if error:
+        return custom_response(error, 400)
+
+    user = UserModel.get_one_user(g.user.get('id'))
+    user.update(data)
+    ser_user = user_schema.dump(user).data
+    return custom_response(ser_user, 200)
 
 
 @user_api.route('/all', methods=['GET'])
@@ -72,18 +109,6 @@ def get_user(user_id):
     return custom_response(ser_user, 200)
 
 
-@user_api.route('/me', methods=['GET'])
-@Auth.auth_required
-def get_me():
-    '''
-    Get owners user information (me)
-    '''
-
-    user = UserModel.get_one_user(g.user.get('id'))
-    ser_user = user_schema.dump(user).data
-    return custom_response(ser_user, 200)
-
-
 @user_api.route('/login', methods=['POST'])
 def login():
     '''
@@ -98,7 +123,8 @@ def login():
         return custom_response(error, 400)
 
     if not data.get('email') or not data.get('password'):
-        return custom_response({'error': 'email and password required to login'})
+        return custom_response({'error': 'email and password ' +
+                                         ' required to login'}, 404)
 
     user = UserModel.get_user_by_email(data.get('email'))
 
@@ -115,31 +141,11 @@ def login():
     return custom_response({'token': token}, 200)
 
 
-@user_api.route('/me', methods=['PUT'])
-@Auth.auth_required
-def update():
-    '''
-    Allows owner of profile (me)
-    to update the user information
-    '''
-
-    req_data = request.get_json()
-    data, error = user_schema.load(req_data, partial=True)
-    if error:
-        return custom_response(error, 400)
-
-    user = UserModel.get_one_user(g.user.get('id'))
-    user.update(data)
-    ser_user = user_schema.dump(user).data
-    return custom_response(ser_user, 200)
-
-
 def custom_response(res, status_code):
     '''
     Creates a custom json response
     for proper status messages
     '''
-
     return Response(
         mimetype='application/json',
         response=json.dumps(res),
