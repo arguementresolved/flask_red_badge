@@ -8,6 +8,7 @@ from .views.user_view import user_api as user_blueprint
 from .views.blogpost_view import comment_api as comment_blueprint
 from .views.battle_view import battles_api as battles_blueprint
 
+
 def create_app(env_name):
     '''
     Create App

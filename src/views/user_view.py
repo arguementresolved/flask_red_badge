@@ -7,10 +7,18 @@ user_api = Blueprint('users', __name__)
 user_schema = UserSchema()
 
 pro_data = {
+<<<<<<< HEAD
         "username": "username",
         "content": "content",
         "owner_id": "owner_id"
 }
+=======
+    "username": "username",
+    "content": "content",
+    "owner_id": "owner_id"
+}
+
+>>>>>>> 7a82c454d6ca14cd7a6ede9455afea6a64b15b4d
 
 @user_api.route('/', methods=['POST'])
 def create():
@@ -33,7 +41,7 @@ def create():
     user = UserModel(data)
     user.save()
 
- 
+
 
     ser_data = user_schema.dump(user).data
 
