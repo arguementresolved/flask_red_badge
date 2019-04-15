@@ -35,24 +35,25 @@ def battleFunc():
 
     # JSON REQUEST AND PROCCESSING OF API
     json_data_1 = BattlesModel.get_powerstats(k)
+    loaded_json = json_data_1
     json_data_2 = BattlesModel.get_powerstats(l)
 
-    z1 = json_data_1['name']
-    a1 = json_data_1['intelligence']
-    b1 = json_data_1['strength']
-    c1 = json_data_1['speed']
-    d1 = json_data_1['durability']
-    e1 = json_data_1['power']
-    f1 = json_data_1['combat']
+    z1 = json_data_1[0]['name']
+    a1 = json_data_1[0]['intelligence']
+    b1 = json_data_1[0]['strength']
+    c1 = json_data_1[0]['speed']
+    d1 = json_data_1[0]['durability']
+    e1 = json_data_1[0]['power']
+    f1 = json_data_1[0]['combat']
 
-    z2 = json_data_2['name']
-    a2 = json_data_2['intelligence']
-    b2 = json_data_2['strength']
-    c2 = json_data_2['speed']
-    d2 = json_data_2['durability']
-    e2 = json_data_2['power']
-    f2 = json_data_2['combat']
-    
+    z2 = json_data_2[0]['name']
+    a2 = json_data_2[0]['intelligence']
+    b2 = json_data_2[0]['strength']
+    c2 = json_data_2[0]['speed']
+    d2 = json_data_2[0]['durability']
+    e2 = json_data_2[0]['power']
+    f2 = json_data_2[0]['combat']
+
 
     '''
     STARTING COUNTERS
