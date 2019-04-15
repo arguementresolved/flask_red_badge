@@ -35,7 +35,6 @@ def battleFunc():
 
     # JSON REQUEST AND PROCCESSING OF API
     json_data_1 = BattlesModel.get_powerstats(k)
-    loaded_json = json_data_1
     json_data_2 = BattlesModel.get_powerstats(l)
 
     z1 = json_data_1[0]['name']
@@ -53,7 +52,6 @@ def battleFunc():
     d2 = json_data_2[0]['durability']
     e2 = json_data_2[0]['power']
     f2 = json_data_2[0]['combat']
-
 
     '''
     STARTING COUNTERS
