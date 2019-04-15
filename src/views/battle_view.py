@@ -23,10 +23,11 @@ def get_fighter():
     return custom_response(fighter, 200)
 
 
+
 @battles_api.route('/calc', methods=["POST"])
 def battleFunc():
     '''
-    INPUT HERO NUMBER
+    Input hero id - do this through "k" for fighter #1 and "l" for fighter 2
     '''
 
     req_data = request.get_json()
