@@ -13,13 +13,6 @@ pro_data = {
 }
 
 
-@blueprint.after_request
-def after_request(response):
-    header = response.headers
-    header['Access-Control-Allow-Origin'] = '*'
-    return response
-
-
 @user_api.route('/', methods=['POST'])
 def create():
     '''
