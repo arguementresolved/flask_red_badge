@@ -23,7 +23,6 @@ def get_fighter():
     return custom_response(fighter, 200)
 
 
-
 @battles_api.route('/calc', methods=["POST"])
 def battleFunc():
     '''
@@ -31,8 +30,8 @@ def battleFunc():
     '''
 
     req_data = request.get_json()
-    k = req_data["k"]
-    l = req_data["l"]
+    k = req_data["fighter1"]
+    l = req_data["fighter2"]
 
     # JSON REQUEST AND PROCCESSING OF API
     json_data_1 = BattlesModel.get_powerstats(k)
