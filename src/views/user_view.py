@@ -7,9 +7,8 @@ user_api = Blueprint('users', __name__)
 user_schema = UserSchema()
 
 pro_data = {
-        "username": "username",
-        "content": "content",
-        "owner_id": "owner_id"
+        "username": UserModel.username,
+        "email": UserModel.email
 }
 
 
@@ -59,12 +58,11 @@ def login():
                                          ' required to login'}, 404)
 
     user = UserModel.get_user_by_email(data.get('email'))
-
     if not user:
         return custom_response({'error': 'invalid credentials'}, 400)
 
     if not user.check_hash(data.get('password')):
-        return custom_response({'error': 'invalid credentials'})
+        return custom_response({'error': 'invalid credentials'}, 400)
 
     ser_data = user_schema.dump(user).data
 
