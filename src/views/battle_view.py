@@ -209,14 +209,14 @@ def battleFunc():
     Also, it implements the TIEBREAKER Stat (g1 and g2), if needed.
     '''
     if x > y:
-        winner = f'{z1} vs. {z2}, {z1} would win!'
+        winner = f'{z1} vs. {z2}:\n {z1} would win!'
     elif x < y:
-        winner = f'{z1} vs. {z2}, {z2} would win!'
+        winner = f'{z1} vs. {z2}:\n {z2} would win!'
     elif x == y:
         if g1 > g2:
-            winner = f'{z1} vs. {z2}, {z1} would win!'
+            winner = f'{z1} vs. {z2}:\n {z1} would win!'
         elif g1 < g2:
-            winner = f'{z1} vs. {z2}, {z2} would win!'
+            winner = f'{z1} vs. {z2}:\n {z2} would win!'
         elif g1 == g2:
             winner = f'{z1} vs. {z2} would result in a stalmate!'
 
