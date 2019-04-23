@@ -75,6 +75,7 @@ def battleFunc():
                 a1 = 0
             else:
                 a1 = i
+                print(i,'================================================')
         if i == 'strength':
             if i == 'null':
                 b1 = 0
