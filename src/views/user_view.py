@@ -1,6 +1,8 @@
 from flask import request, json, Response, Blueprint, g
 from ..models.user import UserModel, UserSchema
 from ..shared.authentication import Auth
+from .blogpost_view import get_all as getComments
+from .blogpost_view import delete as commentDelete
 
 
 user_api = Blueprint('users', __name__)
@@ -82,7 +84,7 @@ def profile():
     return custom_response(ser_user, 200)
 
 
-@user_api.route('/me', methods=["DELETE"])
+@user_api.route('/delete', methods=["DELETE"])
 @Auth.auth_required
 def delete():
     '''
@@ -90,6 +92,10 @@ def delete():
     if authenticated
     '''
     user = UserModel.get_one_user(g.user.get('id'))
+    x = getComments().get_json()
+    for comment in x:
+        if comment['owner_id'] == user.id:
+            commentDelete(comment['id'])
     user.delete()
     return custom_response({'message': 'deleted'}, 204)
 
