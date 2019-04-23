@@ -110,37 +110,37 @@ def battleFunc():
     '''
     for i in json_data_2:
         if i == 'name':
-            z2 = json_data_2[i]
+            z2 = i
         if i == 'intelligence':
-            if (json_data_2[i]) == 'null':
+            if i == 'null':
                 a2 = 0
             else:
-                a2 = int(json_data_2[i])
+                a2 = i
         if i == 'strength':
             if (json_data_2[i]) == 'null':
                 b2 = 0
             else:
-                b2 = int(json_data_2[i])
+                b2 = i
         if i == 'speed':
-            if (json_data_2[i]) == 'null':
+            if i == 'null':
                 c2 = 0
             else:
-                c2 = int(json_data_2[i])
+                c2 = i
         if i == 'durability':
-            if (json_data_2[i]) == 'null':
+            if i == 'null':
                 d2 = 0
             else:
-                d2 = int(json_data_2[i])
+                d2 = i
         if i == 'power':
-            if (json_data_2[i]) == 'null':
+            if i == 'null':
                 e2 = 0
             else:
-                e2 = int(json_data_2[i])
+                e2 = i
         if i == 'combat':
-            if (json_data_2[i]) == 'null':
+            if i == 'null':
                 f2 = 0
             else:
-                f2 = int(json_data_2[i])
+                f2 = i
     g2 = a2 + b2 + c2 + d2 + e2 + f2
 
     # ADDING TO COUNTERS, USING THE "WIN POINTS"
@@ -190,7 +190,7 @@ def battleFunc():
         x += 1
     elif e1 < e2:
         y += 1
-    elif e1 == a2:
+    elif e1 == e2:
         x += 1
         y += 1
 
@@ -208,6 +208,8 @@ def battleFunc():
     Calculates the stats from above and determines which hero is the winner.
     Also, it implements the TIEBREAKER Stat (g1 and g2), if needed.
     '''
+    
+
     if x > y:
         winner = f'{z1} would win!'
     elif x < y:
