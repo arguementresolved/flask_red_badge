@@ -23,16 +23,16 @@ def get_fighter():
     return custom_response(fighter, 200)
 
 
-
 @battles_api.route('/calc', methods=["POST"])
+@Auth.auth_required
 def battleFunc():
     '''
     Input hero id - do this through "k" for fighter #1 and "l" for fighter 2
     '''
 
     req_data = request.get_json()
-    k = req_data["k"]
-    l = req_data["l"]
+    k = req_data["fighter1"]
+    l = req_data["fighter2"]
 
     # JSON REQUEST AND PROCCESSING OF API
     json_data_1 = BattlesModel.get_powerstats(k)
@@ -75,6 +75,7 @@ def battleFunc():
                 a1 = 0
             else:
                 a1 = i
+                print(i,'================================================')
         if i == 'strength':
             if i == 'null':
                 b1 = 0
@@ -211,18 +212,52 @@ def battleFunc():
     
 
     if x > y:
-        winner = f'{z2} would win!'
+        winner = f'{z1} vs. {z2}:\n {z2} would win!'
     elif x < y:
-        winner = f'{z1} would win!'
+        winner = f'{z1} vs. {z2}:\n {z1} would win!'
     elif x == y:
         if g1 > g2:
-            winner = f'{z1} would win!'
+            winner = f'{z1} vs. {z2}:\n {z1} would win!'
         elif g1 < g2:
-            winner = f'{z2} would win!'
+            winner = f'{z1} vs. {z2}:\n {z2} would win!'
         elif g1 == g2:
             winner = f'{z1} vs. {z2} would result in a stalmate!'
 
+    # owner_id = BattlesModel.get_one_user(g.battles.get('owner_id'))
+    # print(owner_id, '===================================')
+    # results = {
+    #     'owner_id': owner_id,
+    #     'results': winner
+    # }
+
+    # data = battles_schema.load(results)
+    # battle = BattlesModel(data)
+    # battle.save()
     return custom_response(winner, 200)
+
+
+# @battles_api.route('/', methods=['GET'])
+# def get_all():
+#     Results = BattlesModel.get_all_battles()
+#     data = BattlesSchema.dump(Results, many=True).data
+#     return custom_response(data, 200)
+
+
+# @battles_api.route('/userFights', methods=["GET"])
+# @Auth.auth_required
+# def get_one():
+
+#     req_data = request.get_json()
+#     data, error = battles_schema.load(req_data)
+
+#     Results = BattlesModel.get_users_battle(req_data)
+
+#     if not Results:
+#         return custom_response({'error': 'post not found'}, 404)
+
+#     data = BattlesSchema.dump(Results).data
+
+#     return custom_response(data, 200)
 
 
 def custom_response(res, status_code):

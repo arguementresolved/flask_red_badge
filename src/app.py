@@ -15,25 +15,19 @@ def create_app(env_name):
     '''
     # app initilaztion
     app = Flask(__name__)
-
-    app.config.from_object(app_config['production'])
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
     CORS(app)
+
+    app.config.from_object(app_config['development'])
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['CORS_HEADERS'] = 'application/json'
 
     app.register_blueprint(user_api, url_prefix='/api/v1/users')
     app.register_blueprint(profile_blueprint, url_prefix='/api/v1/profiles')
     app.register_blueprint(comment_blueprint, url_prefix='/api/v1/comments')
     app.register_blueprint(battles_blueprint, url_prefix='/api/v1/battles')
 
+
     bcrypt.init_app(app)
     db.init_app(app)
 
     return app
-
-# @app.route("/profile", methods=['GET', 'POST'])
-# @login_required
-# def profile():
-    # image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
-
-    # return render_template('profile.html', title='Profile', image_file=image_file)

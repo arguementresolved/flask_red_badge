@@ -1,7 +1,5 @@
 
-
 import json
-
 from flask import request, g, Blueprint, json, Response
 from ..shared.authentication import Auth
 from ..models.comments import CommentsModel, CommentsSchema
@@ -32,7 +30,6 @@ def create():
 @comment_api.route('/<int:id>', methods=['DELETE'])
 @Auth.auth_required
 def delete(id):
-
 
     post = CommentsModel.get_one_comments(id)
 

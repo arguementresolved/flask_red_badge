@@ -10,6 +10,7 @@ profile_schema = ProfileSchema()
 
 
 @profile_api.route('/', methods=["GET"])
+@Auth.auth_required
 def profile():
     req_data = request.get_json()
     data, error = profile_schema.load(req_data)

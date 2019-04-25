@@ -47,7 +47,6 @@ class Auth:
             return f(*args, **kwargs)
         return auth_wrapper
 
-
     @staticmethod
     def decode_token(token):
         re = {'data': {}, 'error': {}}

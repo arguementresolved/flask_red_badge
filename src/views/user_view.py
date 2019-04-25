@@ -1,16 +1,18 @@
 from flask import request, json, Response, Blueprint, g
 from ..models.user import UserModel, UserSchema
 from ..shared.authentication import Auth
+from .blogpost_view import get_all as getComments
+from .blogpost_view import delete as commentDelete
 
 
 user_api = Blueprint('users', __name__)
 user_schema = UserSchema()
 
 pro_data = {
-        "username": "username",
-        "content": "content",
-        "owner_id": "owner_id"
+        "username": UserModel.username,
+        "email": UserModel.email
 }
+
 
 @user_api.route('/', methods=['POST'])
 def create():
@@ -33,13 +35,42 @@ def create():
     user = UserModel(data)
     user.save()
 
-
-
     ser_data = user_schema.dump(user).data
 
     token = Auth.generate_token(ser_data['id'])
 
     return custom_response({'token': token}, 201)
+
+
+@user_api.route('/login', methods=['POST'])
+def login():
+    '''
+    Validates and returns a web token
+    if the user credentials are verified
+    '''
+    req_data = request.get_json()
+
+    data, error = user_schema.load(req_data, partial=True)
+
+    if error:
+        return custom_response(error, 400)
+
+    if not data.get('email') or not data.get('password'):
+        return custom_response({'error': 'email and password ' +
+                                         ' required to login'}, 404)
+
+    user = UserModel.get_user_by_email(data.get('email'))
+    if not user:
+        return custom_response({'error': 'invalid credentials'}, 400)
+
+    if not user.check_hash(data.get('password')):
+        return custom_response({'error': 'invalid credentials'}, 400)
+
+    ser_data = user_schema.dump(user).data
+
+    token = Auth.generate_token(ser_data.get('id'))
+
+    return custom_response({'token': token}, 200)
 
 
 @user_api.route('/profile', methods=["GET"])
@@ -53,7 +84,7 @@ def profile():
     return custom_response(ser_user, 200)
 
 
-@user_api.route('/me', methods=["DELETE"])
+@user_api.route('/delete', methods=["DELETE"])
 @Auth.auth_required
 def delete():
     '''
@@ -61,6 +92,10 @@ def delete():
     if authenticated
     '''
     user = UserModel.get_one_user(g.user.get('id'))
+    x = getComments().get_json()
+    for comment in x:
+        if comment['owner_id'] == user.id:
+            commentDelete(comment['id'])
     user.delete()
     return custom_response({'message': 'deleted'}, 204)
 
@@ -72,14 +107,9 @@ def update():
     Allows owner of profile (me)
     to update the user information
     '''
-
     req_data = request.get_json()
-    data, error = user_schema.load(req_data, partial=True)
-    if error:
-        return custom_response(error, 400)
-
     user = UserModel.get_one_user(g.user.get('id'))
-    user.update(data)
+    user.update(req_data)
     ser_user = user_schema.dump(user).data
     return custom_response(ser_user, 200)
 
@@ -107,38 +137,6 @@ def get_user(user_id):
 
     ser_user = user_schema.dump(user).data
     return custom_response(ser_user, 200)
-
-
-@user_api.route('/login', methods=['POST'])
-def login():
-    '''
-    Validates and returns a web token
-    if the user credentials are verified
-    '''
-    req_data = request.get_json()
-
-    data, error = user_schema.load(req_data, partial=True)
-
-    if error:
-        return custom_response(error, 400)
-
-    if not data.get('email') or not data.get('password'):
-        return custom_response({'error': 'email and password ' +
-                                         ' required to login'}, 404)
-
-    user = UserModel.get_user_by_email(data.get('email'))
-
-    if not user:
-        return custom_response({'error': 'invalid credentials'}, 400)
-
-    if not user.check_hash(data.get('password')):
-        return custom_response({'error': 'invalid credentials'})
-
-    ser_data = user_schema.dump(user).data
-
-    token = Auth.generate_token(ser_data.get('id'))
-
-    return custom_response({'token': token}, 200)
 
 
 def custom_response(res, status_code):
