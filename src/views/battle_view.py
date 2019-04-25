@@ -211,9 +211,9 @@ def battleFunc():
     
 
     if x > y:
-        winner = f'{z1} would win!'
-    elif x < y:
         winner = f'{z2} would win!'
+    elif x < y:
+        winner = f'{z1} would win!'
     elif x == y:
         if g1 > g2:
             winner = f'{z1} would win!'
